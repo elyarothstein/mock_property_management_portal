@@ -66,3 +66,4 @@ Until that private config file exists, the portal safely keeps using demo data.
 ## Nationwide Screening Feature
 
 The interface includes an all-50-state history review panel. Staff can switch between criminal background, eviction and housing-court, rental history, and credit/public-record coverage, then see each state's status as clear, pending, review required, or local rules noted.
+# mock_property_management_portal
