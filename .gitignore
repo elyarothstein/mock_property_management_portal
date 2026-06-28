@@ -1,0 +1,45 @@
+# Local secrets and real customer data should never be committed to GitHub.
+src/config.local.js
+.env
+.env.*
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+
+# Dependency/build folders if the project is later converted to a bundled app.
+node_modules/
+dist/
+build/
+# Real tenant, landlord, payment, screening, lease, and accounting data
+real-data/
+private-data/
+customer-data/
+tenant-data/
+landlord-data/
+uploads/
+documents/
+reports/
+exports/
+*.csv
+*.xlsx
+*.pdf
+
+# Local/private config
+src/config.local.js
+.env
+.env.*
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
+# Mac/system files
+.DS_Store
+Thumbs.db
+
+# Dependencies/build output
+node_modules/
+dist/
+build/

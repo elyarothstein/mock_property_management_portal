@@ -1,0 +1,24 @@
+{
+  "name": "property-management-portal",
+  "version": "1.0.0",
+  "description": "Professional landlord and renter portal with property management, tenant screening, rent collection, maintenance, accounting, and lease tracking.",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 4173",
+    "serve": "python3 -m http.server 4173"
+  },
+  "keywords": [
+    "property-management",
+    "landlord-portal",
+    "renter-portal",
+    "real-estate",
+    "rent-payments",
+    "maintenance",
+    "accounting",
+    "tenant-screening",
+    "background-checks",
+    "credit-checks"
+  ],
+  "author": "",
+  "license": "UNLICENSED"
+}

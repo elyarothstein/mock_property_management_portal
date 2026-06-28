@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Property Management Portal</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div class="application-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="brand-block">
+          <div class="brand-mark" aria-hidden="true">PM</div>
+          <div>
+            <p class="eyebrow">Real Estate Operations</p>
+            <h1>Property Portal</h1>
+          </div>
+        </div>
+
+        <section class="account-card" aria-label="Demo account selector">
+          <p class="panel-label">Signed in as</p>
+          <strong id="activeAccountName">Harbor View Management</strong>
+          <span id="activeAccountRole">Landlord account</span>
+          <div class="role-toggle" role="group" aria-label="Account type">
+            <button class="role-button active" data-role-switch="landlord" type="button">Landlord</button>
+            <button class="role-button" data-role-switch="renter" type="button">Renter</button>
+          </div>
+        </section>
+
+        <nav class="navigation-list" aria-label="Portal workspace">
+          <button class="navigation-item active" data-section="landlord-dashboard" data-role-nav="landlord">Dashboard</button>
+          <button class="navigation-item" data-section="properties" data-role-nav="landlord">Properties</button>
+          <button class="navigation-item" data-section="applications" data-role-nav="landlord">Applications</button>
+          <button class="navigation-item" data-section="screening" data-role-nav="landlord">Screening</button>
+          <button class="navigation-item" data-section="payments" data-role-nav="landlord">Payments</button>
+          <button class="navigation-item" data-section="maintenance" data-role-nav="landlord">Maintenance</button>
+          <button class="navigation-item" data-section="accounting" data-role-nav="landlord">Accounting</button>
+          <button class="navigation-item" data-section="legal" data-role-nav="landlord">Lease & Legal</button>
+          <button class="navigation-item" data-section="renter-home" data-role-nav="renter" hidden>My Rental</button>
+          <button class="navigation-item" data-section="renter-payments" data-role-nav="renter" hidden>Pay Rent</button>
+          <button class="navigation-item" data-section="renter-maintenance" data-role-nav="renter" hidden>Maintenance</button>
+          <button class="navigation-item" data-section="renter-documents" data-role-nav="renter" hidden>Documents</button>
+        </nav>
+
+        <div class="sidebar-panel">
+          <p class="panel-label">Portfolio</p>
+          <strong>Harbor View Residences</strong>
+          <span>24-unit multifamily portfolio</span>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="workspace-header">
+          <div>
+            <p class="eyebrow" id="workspaceEyebrow">Landlord operations</p>
+            <h2 id="workspaceTitle">Portfolio Command Center</h2>
+          </div>
+          <div class="header-actions">
+            <button class="secondary-button" id="exportSummaryButton" type="button">Export Summary</button>
+            <button class="primary-button" id="primaryActionButton" type="button">Record Payment</button>
+          </div>
+        </header>
+
+        <section class="demo-disclaimer" aria-label="Demo-only disclaimer">
+          <strong>Demo only for GitHub review.</strong>
+          This website is a prototype and should not be used for real landlords, renters, payments, credit checks, background checks, leases, legal notices, or private tenant data. Do not enter real personal, financial, payment, screening, or legal information.
+        </section>
+
+        <section class="auth-panel" data-section-view="auth landlord-dashboard renter-home">
+          <div>
+            <p class="eyebrow">Account access</p>
+            <h3>Create or sign in to a portal account</h3>
+            <p>Landlords manage properties, rent collection, maintenance, accounting, applications, screening, leases, and legal documents. Renters pay rent, submit maintenance requests, view documents, and track their account.</p>
+          </div>
+          <form class="auth-form" id="accountForm">
+            <label>
+              Account type
+              <select id="accountTypeSelect" name="accountType">
+                <option value="landlord">Landlord / property manager</option>
+                <option value="renter">Renter / tenant</option>
+              </select>
+            </label>
+            <label>
+              Full name or business name
+              <input id="accountNameInput" name="accountName" type="text" value="Harbor View Management" required />
+            </label>
+            <label>
+              Email address
+              <input name="email" type="email" value="manager@harborview.example" required />
+            </label>
+            <button class="primary-button full-width" type="submit">Use Demo Account</button>
+          </form>
+        </section>
+
+        <section class="status-grid landlord-only" aria-label="Landlord portfolio metrics">
+          <article class="metric-card">
+            <span class="metric-label">Occupancy</span>
+            <strong id="occupancyMetric">0%</strong>
+            <small id="occupancyDetail">0 occupied units</small>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Monthly Rent Collected</span>
+            <strong id="collectedMetric">$0</strong>
+            <small id="collectionDetail">Collected this month</small>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Outstanding Rent</span>
+            <strong id="outstandingMetric">$0</strong>
+            <small>Open tenant balances</small>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Net Operating Income</span>
+            <strong id="noiMetric">$0</strong>
+            <small>Income minus expenses</small>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Open Maintenance</span>
+            <strong id="maintenanceMetric">0</strong>
+            <small>Requests needing action</small>
+          </article>
+        </section>
+
+        <section class="status-grid renter-only" aria-label="Renter account metrics" hidden>
+          <article class="metric-card">
+            <span class="metric-label">Rent Due</span>
+            <strong id="renterBalanceMetric">$0</strong>
+            <small id="renterDueDateMetric">Due soon</small>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Last Payment</span>
+            <strong id="renterLastPaymentMetric">$0</strong>
+            <small>Received by landlord</small>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Open Requests</span>
+            <strong id="renterMaintenanceMetric">0</strong>
+            <small>Maintenance tickets</small>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Lease Ends</span>
+            <strong id="leaseEndMetric">--</strong>
+            <small>Current rental agreement</small>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <section class="section-panel wide-panel" data-section-view="landlord-dashboard properties">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Portfolio health</p>
+                <h3>Properties and Occupancy</h3>
+              </div>
+              <span class="status-pill" id="vacancyPill">0 vacant</span>
+            </div>
+            <div class="property-grid" id="propertyGrid"></div>
+          </section>
+
+          <section class="section-panel" data-section-view="landlord-dashboard payments">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Rent ledger</p>
+                <h3>Who Paid and Who Owes</h3>
+              </div>
+              <span class="status-pill warning" id="latePaymentPill">0 late</span>
+            </div>
+            <div class="ledger-list" id="paymentLedger"></div>
+          </section>
+
+          <section class="section-panel" data-section-view="landlord-dashboard maintenance">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Tenant requests</p>
+                <h3>Maintenance Queue</h3>
+              </div>
+              <span class="status-pill" id="urgentMaintenancePill">0 urgent</span>
+            </div>
+            <div class="maintenance-list" id="landlordMaintenanceList"></div>
+          </section>
+
+          <section class="section-panel" data-section-view="applications">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Leasing pipeline</p>
+                <h3>Rental Applications</h3>
+              </div>
+              <button class="text-button" id="sortApplicantsButton" type="button">Sort by risk</button>
+            </div>
+            <div class="applicant-list" id="applicantList" aria-live="polite"></div>
+          </section>
+
+          <section class="section-panel review-section" data-section-view="applications screening">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Screening workspace</p>
+                <h3 id="selectedApplicantName">Select an applicant</h3>
+              </div>
+              <span class="status-pill" id="selectedApplicantStatus">No applicant selected</span>
+            </div>
+
+            <div class="review-layout">
+              <form class="intake-form" id="screeningForm">
+                <label>
+                  Full legal name
+                  <input id="applicantNameInput" name="fullName" type="text" autocomplete="name" required />
+                </label>
+                <label>
+                  Monthly income
+                  <input id="monthlyIncomeInput" name="monthlyIncome" type="number" min="0" step="100" required />
+                </label>
+                <label>
+                  Monthly rent
+                  <input id="monthlyRentInput" name="monthlyRent" type="number" min="0" step="50" required />
+                </label>
+                <label>
+                  Requested move-in date
+                  <input id="moveInDateInput" name="moveInDate" type="date" required />
+                </label>
+                <label>
+                  Screening package
+                  <select id="packageSelect" name="screeningPackage">
+                    <option value="complete">Complete nationwide tenant screen</option>
+                    <option value="credit">Nationwide credit and income only</option>
+                    <option value="criminal">Nationwide criminal and eviction only</option>
+                  </select>
+                </label>
+                <label>
+                  Search coverage
+                  <select id="coverageSelect" name="coverageScope">
+                    <option value="all-states">All 50 U.S. states</option>
+                    <option value="address-history">Applicant address history states</option>
+                    <option value="property-state">Property state only</option>
+                  </select>
+                </label>
+                <label class="checkbox-row">
+                  <input id="consentCheckbox" type="checkbox" />
+                  Applicant authorization received
+                </label>
+                <button class="primary-button full-width" type="submit">Run Demo Screening</button>
+              </form>
+
+              <div class="report-summary" id="reportSummary">
+                <p class="empty-state">Choose an applicant or run a demo screening to view report findings.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-panel checks-section" data-section-view="screening">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Required review areas</p>
+                <h3>Screening Checklist</h3>
+              </div>
+              <span class="status-pill">Provider-ready</span>
+            </div>
+            <div class="checklist-grid" id="checklistGrid"></div>
+          </section>
+
+          <section class="section-panel nationwide-section" data-section-view="screening">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Nationwide search coverage</p>
+                <h3>All 50 State History Review</h3>
+              </div>
+              <span class="status-pill">50 states</span>
+            </div>
+            <div class="coverage-toolbar">
+              <label>
+                Coverage type
+                <select id="coverageTypeSelect">
+                  <option value="criminal">Criminal background</option>
+                  <option value="eviction">Eviction and housing court</option>
+                  <option value="rental">Rental history</option>
+                  <option value="credit">Credit and public records</option>
+                </select>
+              </label>
+              <label>
+                State search
+                <input id="stateSearchInput" type="search" placeholder="Search by state or abbreviation" />
+              </label>
+            </div>
+            <div class="coverage-summary-grid">
+              <article>
+                <strong id="clearStatesMetric">0</strong>
+                <span>Clear</span>
+              </article>
+              <article>
+                <strong id="reviewStatesMetric">0</strong>
+                <span>Review required</span>
+              </article>
+              <article>
+                <strong id="restrictedStatesMetric">0</strong>
+                <span>Local rules noted</span>
+              </article>
+            </div>
+            <div class="state-coverage-grid" id="stateCoverageGrid" aria-live="polite"></div>
+          </section>
+
+          <section class="section-panel wide-panel" data-section-view="accounting">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Accounting</p>
+                <h3>Profit, Loss, and Cash Flow</h3>
+              </div>
+              <span class="status-pill" id="profitStatusPill">Current month</span>
+            </div>
+            <div class="finance-grid" id="financeGrid"></div>
+            <div class="accounting-table" id="accountingTable"></div>
+          </section>
+
+          <section class="section-panel wide-panel" data-section-view="legal">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Contracts and legal operations</p>
+                <h3>Lease, Notices, and Compliance Library</h3>
+              </div>
+              <span class="status-pill warning">Attorney review</span>
+            </div>
+            <div class="document-grid" id="documentGrid"></div>
+            <div class="notice-box">
+              This portal tracks leases, notices, insurance, inspections, and compliance tasks. It is not legal advice; production documents should be reviewed by qualified counsel for the property location.
+            </div>
+          </section>
+
+          <section class="section-panel adverse-section" data-section-view="legal screening">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Decision support</p>
+                <h3>Adverse Action Preparation</h3>
+              </div>
+              <span class="status-pill warning">Legal review</span>
+            </div>
+            <div class="adverse-workflow">
+              <label>
+                Decision outcome
+                <select id="decisionOutcomeSelect">
+                  <option value="approved">Approve application</option>
+                  <option value="conditional">Approve with condition</option>
+                  <option value="denied">Deny application</option>
+                </select>
+              </label>
+              <label>
+                Consumer report factors used
+                <textarea id="reportFactorsInput" rows="5">Credit history, income verification, rental history, eviction records, criminal-history review where legally permitted.</textarea>
+              </label>
+              <button class="secondary-button full-width" id="generateNoticeButton" type="button">Prepare Notice Checklist</button>
+              <div class="notice-output" id="noticeOutput"></div>
+            </div>
+          </section>
+
+          <section class="section-panel wide-panel renter-panel" data-section-view="renter-home">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Renter portal</p>
+                <h3>My Rental Account</h3>
+              </div>
+              <span class="status-pill" id="renterUnitPill">Unit 3B</span>
+            </div>
+            <div class="renter-overview" id="renterOverview"></div>
+          </section>
+
+          <section class="section-panel renter-panel" data-section-view="renter-payments">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Rent payment</p>
+                <h3>Pay Rent</h3>
+              </div>
+              <span class="status-pill warning" id="renterPaymentStatus">Balance due</span>
+            </div>
+            <form class="payment-form" id="rentPaymentForm">
+              <label>
+                Payment amount
+                <input id="rentPaymentAmountInput" name="paymentAmount" type="number" min="1" step="1" required />
+              </label>
+              <label>
+                Payment method
+                <select name="paymentMethod">
+                  <option value="Bank transfer">Bank transfer</option>
+                  <option value="Debit card">Debit card</option>
+                  <option value="Credit card">Credit card</option>
+                </select>
+              </label>
+              <button class="primary-button full-width" type="submit">Submit Demo Payment</button>
+            </form>
+            <div class="notice-output" id="renterPaymentReceipt"></div>
+          </section>
+
+          <section class="section-panel renter-panel" data-section-view="renter-maintenance">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Maintenance</p>
+                <h3>Report a Problem</h3>
+              </div>
+              <span class="status-pill">Sent to landlord</span>
+            </div>
+            <form class="maintenance-form" id="maintenanceRequestForm">
+              <label>
+                Category
+                <select name="category">
+                  <option value="Plumbing">Plumbing</option>
+                  <option value="Electrical">Electrical</option>
+                  <option value="Appliance">Appliance</option>
+                  <option value="Heating / Cooling">Heating / Cooling</option>
+                  <option value="General repair">General repair</option>
+                </select>
+              </label>
+              <label>
+                Priority
+                <select name="priority">
+                  <option value="Normal">Normal</option>
+                  <option value="Urgent">Urgent</option>
+                </select>
+              </label>
+              <label>
+                Description
+                <textarea name="description" rows="5" placeholder="Describe the maintenance issue" required></textarea>
+              </label>
+              <button class="primary-button full-width" type="submit">Submit Maintenance Request</button>
+            </form>
+          </section>
+
+          <section class="section-panel renter-panel" data-section-view="renter-maintenance renter-documents">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Renter records</p>
+                <h3>My Requests and Documents</h3>
+              </div>
+              <span class="status-pill" id="renterDocumentPill">Active lease</span>
+            </div>
+            <div class="maintenance-list" id="renterMaintenanceList"></div>
+            <div class="document-grid renter-documents" id="renterDocumentGrid"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="src/config.local.js"></script>
+    <script src="src/secure-backend.js"></script>
+    <script src="src/application.js"></script>
+  </body>
+</html>
